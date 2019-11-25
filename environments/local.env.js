@@ -20,19 +20,12 @@ const mongooseOptions = {
         dbName: 'stoveRove',
         options: mongooseOptions,
       },
-      restPanel: {
-        name: 'restPanel',
-        user: 'admin',
-        password: 'admin123',
-        url: '159.89.164.240:27017', // 159.89.164.240
-        dbName: 'restaurant_panel',
-        options: mongooseOptions,
-      },
     },
     auth: {
       url: 'http://139.59.92.1:5000',
       login: { path: '/login', method: 'post' },
       signup: { path: '/signup', method: 'post' },
+      resetPassword: { path: '/account/resetPassword', method: 'post' },
     },
     mailService: {
       url: 'https://api02.laalsa.com',

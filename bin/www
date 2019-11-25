@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+
+/* eslint-disable global-require */
+
+/**
+ * Module dependencies.
+ */
+// const tunnel = require('tunnel-ssh');
+// const path = require('path');
+
+// const env = process.env.NODE_ENV || 'local';
+const env = 'dev';
+console.log('enviroment : ', env);
+require('../utils/logger');
+({ getMessages: global.messages } = require('../utils'));
+const debug = require('debug')('suggestions-app:server');
+const http = require('http');
+const config = require('./config')(env);
+const { Database } = require('../utils/database');
+
+global.config = config.app;
+// eslint-disable-next-line import/no-dynamic-require
+global.services = require(`../environments/${env}.env`);
+const { app, initApp } = require('../app');
+
+const { port } = config.server;
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+let server;
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  debug(`Listening on ${bind}`);
+  console.log(`Listening on ${bind}`);
+}
+
+async function startServer() {
+  try {
+    console.log('starting server');
+    await new Database(global.services('databases'));
+    initApp();
+    app.set('port', config.server.port);
+    app.set('hostname', config.server.hostname);
+    server = http.createServer(app);
+    server.on('error', onError);
+    server.on('listening', onListening);
+    server.listen(app.get('port'), app.get('hostname'));
+  } catch (err) {
+    console.log('server can not be started.');
+    console.log(err);
+  }
+}
+
+startServer();
