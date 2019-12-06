@@ -9,7 +9,7 @@
 // const path = require('path');
 
 // const env = process.env.NODE_ENV || 'local';
-const env = 'dev';
+const env = process.env.NODE_ENV || 'local';
 console.log('enviroment : ', env);
 require('../utils/logger');
 ({ getMessages: global.messages } = require('../utils'));
@@ -60,9 +60,11 @@ function onListening() {
 }
 
 async function startServer() {
+  console.log('after db');
   try {
-    console.log('starting server');
+    console.log('starting server', global.services('databases'));
     await new Database(global.services('databases'));
+    console.log('after try db');
     initApp();
     app.set('port', config.server.port);
     app.set('hostname', config.server.hostname);

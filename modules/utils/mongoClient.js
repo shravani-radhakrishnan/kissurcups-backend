@@ -1,20 +1,29 @@
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
+
 const databases = global.services('databases');
+
 const options = {
-    native_parser:true,
-    userNewUrlParser:true
+  useUnifiedTopology: true,
+  native_parser: true,
+  useNewUrlParser: true,
 };
-function connectdb(resDb){
-    return new Promise((resolve,reject)=>{
-        const dbOptions =databases[resDb];
-        MongoClient.connect('mongodb+srv://admin:1234@localdb-eemjv.mongodb.net/test?retryWrites=true&w=majority',options,(err,client)=>{
-            if(err){
-                logger.error(err);
-                reject({message:'UNKNOWN'});
-            }else{
-                resolve(client);
-            }
-        })
-    })
+
+
+function connectdb(reqDb) {
+  return new Promise((resolve, reject) => {
+    const dbOptions = databases[reqDb];
+    MongoClient.connect(`mongodb://${dbOptions.url}`, options, (err, client) => {
+      if (err) {
+        // eslint-disable-next-line no-undef
+        logger.error(err);
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject({ message: 'UNKNOWN' });
+      } else {
+        console.log('mongo client connected');
+        resolve(client);
+      }
+    });
+  });
 }
+
 module.exports = connectdb;

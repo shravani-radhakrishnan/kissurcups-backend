@@ -1,9 +1,11 @@
-const mongooseAsync = require('../utils/mongooseAsyncRepo');
-const mongoClient = require('../utils/mongoClient');
-const mongoClientHandler = require('../utils/mongoClientRequestHandler');
+const mongooseAsync = require('./mongooseAsyncRepo');
+const serviceCall = require('./serviceCaller');
+const serviceCallOptions = require('./serviceCallOptions');
+const mongoConnect = require('./mongoClient');
 
 module.exports = {
-    mongoClient,
-    mongooseAsync,
-    mongoClientRequestHandler
+  mongooseAsync,
+  serviceCall,
+  serviceCallOptions,
+  mongoConnect,
 };

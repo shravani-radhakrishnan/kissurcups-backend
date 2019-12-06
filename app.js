@@ -2,12 +2,13 @@
 const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
-// const localSession = require('./modules/utils/localSession');
 
 const app = express();
 // cors
 function initApp() {
+  console.log('dsfsdf_________');
   app.use((req, res, next) => {
+    console.log('==>after app use');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header(
@@ -25,15 +26,16 @@ function initApp() {
       next();
     }
   });
-
+  console.log('after app use');
   app.use(logger('dev'));
   app.use(express.json({ limit: '10MB' }));
   app.use(express.urlencoded({ extended: true }));
 
   const kissUrCups = require('./modules/router');
-  // const stoveRove = require('./modules/router');
 
-  app.use('/*', (req, res, next) => {
+  console.log(kissUrCups);
+
+  app.use('/*', async (req, res, next) => {
     console.log(req.originalUrl);
     next();
   });
@@ -44,7 +46,6 @@ function initApp() {
   app.use((req, res, next) => {
     next(createError(404));
   });
-
   // error handler
   // eslint-disable-next-line no-unused-vars
   app.use((err, req, res, next) => {

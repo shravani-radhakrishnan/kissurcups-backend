@@ -1,67 +1,67 @@
-const { User } = '../../models';
-const { mongooseAsync, serviceCall, serviceCallOptions } = require('../../utils');
+const { User } = require('../../models');
+const { mongooseAsync } = require('../../utils');
+const { hashData } = require('../../../utils/crypto');
+
 async function login(loginDetails) {
-    const checkUser = await mongooseAsync.findOneDoc(
-        {
-            mobile: loginDetails.mobile
-        },
-        user,
-        '',
-        {
-            lean: true,
-        }
-    );
-    if (checkUser) {
-        const loginOptions = serviceCallOptions(
-            'auth',
-            {
-                method: 'cred',
-                userId: loginDetails.mobile,
-                password: loginDetails.password,
-                deviceId: loginDetails.deviceId,
-                gcmId: '',
-                gcmToken: '',
-                appVersion: loginDetails.appVersion,
-                app: loginDetails.app,
-            }
-        );
-        const logincall = await serviceCall(loginOptions);
-        checkUser.token = loginOptions.data.token;
-        return Promimse.resolve(global.messages.success('LOGIN', checkUser))
-    }
-    throw new Error('USER NOT FOUND');
-}
-async function resetPassword(payload) {
-    const uid = await mongooseAsync.findOneDoc(
-        {
-            mobile: payload.mobile
-        },
-        user,
-        {
-            userId: 1,
-            _id: 0
-        },
-    );
-    if (uid === null) {
-        throw new Error('USER NOT FOUND');
-    } else if (uid.userId === '') {
-        throw new Error('USER NOT FOUND');
-    }
-    const resetPasswordOptions = await serviceCallOptions(
-        'auth',
-        'resetpassword',
-        {
-            userId: uid.userId,
-            password: payload.password,
-            app: payload.app
-        },
-    );
-    const resetPwd = await serviceCall(resetPasswordOptions);
-    if(resetPwd.type === 'success'){
-        return Promise.resolve(global.messages.success('RESET PASSWORD',{}));
-    }else{
-        throw new Error('RESET PASSWORD FAILED');
-    }
+  const password = await hashData(loginDetails.password);
+  const checkUser = await mongooseAsync.findOneDoc(
+    {
+      mobile: loginDetails.mobile,
+      password,
+    },
+    User,
+    {
+      userName: 1,
+      mobile: 1,
+      email: 1,
+      _id: 0,
+    },
+    {
+      lean: true,
+    },
+  );
+  if (checkUser) {
+    console.log(checkUser);
+    return Promise.resolve(global.messages.success('LOGIN', '', checkUser));
+  }
+  throw new Error('USER_NOT_FOUND');
 }
 
-module.exports ={login,resetPassword};
+async function resetPassword(resetPass) {
+  const ValidateUser = await mongooseAsync.findOneDoc(
+    {
+      mobile: resetPass.mobile,
+    },
+    User,
+    {
+
+    },
+  );
+  if (ValidateUser === null) {
+    throw new Error('USER_NOT_FOUND');
+  } else {
+    const newPassword = await hashData(resetPass.password);
+    const replace = await mongooseAsync.updateOne(
+      User,
+      {
+        mobile: resetPass.mobile,
+      },
+      {
+        $set: {
+          password: newPassword,
+        },
+      }
+    );
+    console.log('replace', replace);
+    if (replace != null || replace !== '') {
+      console.log('password updates');
+      if (replace.n === 0) {
+        throw new Error('PSWD_NOT_UPDATED');
+      } else {
+        return Promise.resolve(global.messages.success('RESET_PWD', '', {}));
+      }
+    }
+  }
+}
+
+module.exports = { login, resetPassword };
