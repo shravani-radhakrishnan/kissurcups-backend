@@ -20,6 +20,14 @@ const services = {
       dbName: 'localDb',
       options: mongooseOptions, // 127.0.0.1:27017
     },
+    restaurant: {
+      name: 'restaurant',
+      user: '',
+      password: '',
+      url: '127.0.0.1:27017', // mongodb+srv://admin:<password>@localdb-eemjv.mongodb.net/test
+      dbName: 'restaurant',
+      options: mongooseOptions, // 127.0.0.1:27017
+    },
   },
 };
 

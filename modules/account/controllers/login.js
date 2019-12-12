@@ -1,4 +1,5 @@
-const { User } = require('../../models');
+const { User } = require('../../models/userDetails');
+const { restUser } = require('../../models/restUserDetails');
 const { mongooseAsync } = require('../../utils');
 const { hashData } = require('../../../utils/crypto');
 
@@ -21,8 +22,25 @@ async function login(loginDetails) {
     },
   );
   if (checkUser) {
-    console.log(checkUser);
-    return Promise.resolve(global.messages.success('LOGIN', '', checkUser));
+    console.log('user ====', checkUser);
+    const checkRestUser = await mongooseAsync.findOneDoc(
+      {
+        mobile: checkUser.mobile,
+      },
+      restUser,
+      {
+        restUser,
+      },
+    );
+    console.log('checkrestuser', checkRestUser);
+    if (checkRestUser === null) {
+      console.log('null', checkRestUser);
+      throw new Error('NO_USER_REST');
+    } else if (checkRestUser) {
+      console.log('not nul', checkRestUser);
+      return Promise.resolve(global.messages.success('LOGIN', '', checkRestUser));
+    }
+    // return Promise.resolve(global.messages.success('LOGIN', '', checkUser));
   }
   throw new Error('USER_NOT_FOUND');
 }
@@ -50,7 +68,7 @@ async function resetPassword(resetPass) {
         $set: {
           password: newPassword,
         },
-      }
+      },
     );
     console.log('replace', replace);
     if (replace != null || replace !== '') {

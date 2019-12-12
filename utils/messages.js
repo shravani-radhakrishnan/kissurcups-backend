@@ -16,6 +16,14 @@ function getMessage() {
       data: { message: 'Password changed! Please login to continue', type: 'success', data: {} },
       status: 200,
     },
+    OUTLETS_SAVED: {
+      data: { message: 'Outlets are saved with QR Codes', type: 'success', data: {} },
+      status: 200,
+    },
+    OUTLET_TABLES_CREATED: {
+      data: { message: 'Outlet Tables created successfully', type: 'success', data: {} },
+      status: 200,
+    },
   };
 
   const errorMessages = {
@@ -49,6 +57,18 @@ function getMessage() {
     },
     PSWD_NOT_UPDATED: {
       data: { message: 'Password not updated please update after sometime', type: 'error' },
+      status: 400,
+    },
+    NO_USER_REST: {
+      data: { message: 'No restaurant is created with this mobile number', type: 'error' },
+      status: 400,
+    },
+    OUTLETS_ERR: {
+      data: { message: 'outlet fetching error', type: 'error' },
+      status: 400,
+    },
+    ALREADY_OUTLET_TABLES_CREATED: {
+      data: { message: 'Outlet already created ', type: 'error' },
       status: 400,
     },
   };
