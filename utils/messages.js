@@ -24,11 +24,19 @@ function getMessage() {
       data: { message: 'Outlet Tables created successfully', type: 'success', data: {} },
       status: 200,
     },
+    OUTLETS_FETCH: {
+      data: { message: ' Outlets feteched successfully ', type: 'success', data: {} },
+      status: 200,
+    }
   };
 
   const errorMessages = {
     UNKNOWN: {
       data: { message: 'Something happened, please contact customer care.', type: 'error' },
+      status: 500,
+    },
+    CHECK_CREDENTIALS: {
+      data: { message: 'Please Enter correct userId and password', type: 'error' },
       status: 500,
     },
     USER_EXISTS: {

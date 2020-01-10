@@ -6,6 +6,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   mobile: String,
   userName: String,
+  userId: String,
   email: String,
   deviceId: String,
   password: String,
@@ -15,4 +16,5 @@ const userSchema = new Schema({
   gcmToken: String,
 });
 const User = connectedDbs.localDb.model('User', userSchema);
-module.exports = { User };
+const AppUser = connectedDbs.localDb.model('AppUser', userSchema);
+module.exports = { User, AppUser };
