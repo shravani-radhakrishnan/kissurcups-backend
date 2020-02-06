@@ -25,4 +25,11 @@ router.post('/getOutletTables', async (req, res, next) => {
     .catch(next);
 });
 
+router.get('/getAllQrCodes', async (req, res, next) => {
+  controllers.getAllQrCodes(req.body).then((info) => {
+    res.status(info.status).send(info.data);
+  })
+    .catch(next);
+});
+
 module.exports = router;

@@ -1,17 +1,15 @@
 const uuid = require('uuid/v1');
-const { User, AppUser } = require('../../models');
+const { User } = require('../../models');
 const { mongooseAsync } = require('../../utils');
 const { hashData } = require('../../../utils/crypto');
 
 async function signUp(userDetails) {
   console.log(userDetails);
-  const query = {
-    mobile: userDetails.mobile,
-  };
-  const model = (userDetails.userType === 'admin' ? User : AppUser);
   const newUserCheck = await mongooseAsync.findOneDoc(
-    query,
-    model,
+    {
+      mobile: userDetails.mobile,
+    },
+    User,
   );
   if (newUserCheck) {
     logger.info(`exisiting user ${userDetails.mobile}`);
@@ -30,15 +28,14 @@ async function signUp(userDetails) {
       appVersion: userDetails.appVersion,
       gcmId: userDetails.gcmId,
       gcmToken: userDetails.gcmToken,
+      userType: userDetails.userType,
     };
-    if (userDetails.userType === 'admin') {
-      await mongooseAsync.saveDoc(new User(saveObj));
-      return Promise.resolve(global.messages.success('USER_CREATED', '', {}));
-    }
-    if (userDetails.userType === 'appUser') {
-      await mongooseAsync.saveDoc(new AppUser(saveObj));
-      return Promise.resolve(global.messages.success('USER_CREATED', '', {}));
-    }
+    await mongooseAsync.saveDoc(new User(saveObj));
+    return Promise.resolve(global.messages.success('USER_CREATED', '', {}));
+    // if (userDetails.userType === 'appUser') {
+    //   await mongooseAsync.saveDoc(new AppUser(saveObj));
+    //   return Promise.resolve(global.messages.success('USER_CREATED', '', {}));
+    // }
   }
 }
 module.exports = { signUp };

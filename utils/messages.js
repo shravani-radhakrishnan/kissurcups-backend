@@ -27,7 +27,11 @@ function getMessage() {
     OUTLETS_FETCH: {
       data: { message: ' Outlets feteched successfully ', type: 'success', data: {} },
       status: 200,
-    }
+    },
+    MAPPING_DONE: {
+      data: { message: 'Qr mapping completed ', type: 'success', data: {} },
+      status: 200,
+    },
   };
 
   const errorMessages = {
@@ -77,6 +81,10 @@ function getMessage() {
     },
     ALREADY_OUTLET_TABLES_CREATED: {
       data: { message: 'Outlet already created ', type: 'error' },
+      status: 400,
+    },
+    NO_OUTLETS: {
+      data: { message: 'No outlets Available', type: 'error' },
       status: 400,
     },
   };

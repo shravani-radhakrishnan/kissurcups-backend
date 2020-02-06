@@ -7,8 +7,8 @@ const { outletTableDetails } = require('../../models/outletTable');
 const { Outlet } = require('../../models');
 const { mongooseAsync } = require('../../utils');
 
-async function getOutletInfo(outletId, tableDetails, outlet_uuid) {
-  console.log('tableDetails in getOutletInfo', outletId, tableDetails, outlet_uuid);
+async function getOutletInfo(outletId, tableDetails, outlet_uuid, QrCodes) {
+  console.log('tableDetails in getOutletInfo', outletId, tableDetails, outlet_uuid, QrCodes);
   const outletDetails = await mongooseAsync.findOneDoc(
     {
       outletId,
@@ -56,6 +56,7 @@ async function getOutletInfo(outletId, tableDetails, outlet_uuid) {
           tables: tableDetails,
           address: outletDetails.address,
           location: outletDetails.location,
+          QrCodes,
         },
       ));
       console.log('saved data--->', savedOutlet);
@@ -91,6 +92,7 @@ async function outletQRCode(payload) {
       let outletId = '';
       await Promise.all(outlets.map(async (outletData) => {
         let tableDetails = [];
+        let QrCodes = [];
         let outlet_uuid = uuid();
         console.log('outletId', outletData);
         console.log('uuid generator', outlet_uuid);
@@ -100,10 +102,13 @@ async function outletQRCode(payload) {
             tableNo: 'T' + j,
             tableuuid: uuid(),
             QrCode: shortid.generate(),
+            QrLink: 'www.google.com',
+            gpsRadius: 100.0,
           };
           tableDetails.push(tableObj);
+          QrCodes.push(tableObj.QrCode);
         }
-        data = await getOutletInfo(outletData, tableDetails, outlet_uuid);
+        data = await getOutletInfo(outletData, tableDetails, outlet_uuid, QrCodes);
         // console.log('tableDetails Array and outletId --->', tableDetails, outletId);
       }));
       console.log('after completion outlet ids--->', data);

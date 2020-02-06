@@ -2,10 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-const account = require('../account/routes');
-const outlet = require('../outlet/routes');
+const accountRoutes = require('../account/routes');
+const outletRoutes = require('../outlet/routes');
 
-router.use('/account', account);
-router.use('/outlet', outlet);
+router.use('/account', accountRoutes);
+router.use('/outlet', outletRoutes);
 
 module.exports = router;

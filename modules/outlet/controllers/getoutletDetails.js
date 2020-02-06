@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable prefer-destructuring */
-// const outlets = checkUser.permissions.outlets;
 const { Outlet } = require('../../models/outlet');
 const { restUser } = require('../../models/restUserDetails');
 const { mongooseAsync } = require('../../utils');

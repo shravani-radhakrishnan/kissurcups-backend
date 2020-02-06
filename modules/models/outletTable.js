@@ -13,6 +13,7 @@ const outletTableSchema = new Schema({
   tables: Array,
   address: Object,
   location: Object,
+  QrCodes: Array,
 
 });
 

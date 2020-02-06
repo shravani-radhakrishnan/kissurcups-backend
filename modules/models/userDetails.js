@@ -14,7 +14,7 @@ const userSchema = new Schema({
   appVersion: String,
   gcmId: String,
   gcmToken: String,
+  userType: String,
 });
 const User = connectedDbs.localDb.model('User', userSchema);
-const AppUser = connectedDbs.localDb.model('AppUser', userSchema);
-module.exports = { User, AppUser };
+module.exports = { User };
