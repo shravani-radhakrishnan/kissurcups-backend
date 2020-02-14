@@ -32,6 +32,10 @@ function getMessage() {
       data: { message: 'Qr mapping completed ', type: 'success', data: {} },
       status: 200,
     },
+    MAIL_SEND: {
+      data: { message: 'Mail send successfully', type: 'success', data: {} },
+      status: 200,
+    },
   };
 
   const errorMessages = {
@@ -85,6 +89,10 @@ function getMessage() {
     },
     NO_OUTLETS: {
       data: { message: 'No outlets Available', type: 'error' },
+      status: 400,
+    },
+    MAIL_ERROR: {
+      data: { message: 'Mail doesn\'t sent because of some technical issue' },
       status: 400,
     },
   };

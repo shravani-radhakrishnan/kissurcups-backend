@@ -22,7 +22,6 @@ async function getAllQrCodes() {
     throw new Error('NO_OUTLETS');
   } else {
     await Promise.all(outletInfo.map(async (data, onum) => {
-      let outletTables = [];
       const outletObj = {
         outletId: data.outletId,
         outletName: data.outletName,
@@ -31,7 +30,6 @@ async function getAllQrCodes() {
       let tablesObj = {};
       await data.tables.map(async (table, tnum) => {
         tablesObj = { ...outletObj, ...table };
-        // outletTables.push(tablesObj);
         const checkQrCode = await mongooseAsync.findOneDoc(table.QrCode, QrMapping, QrMapping);
         console.log(checkQrCode);
         if (!checkQrCode) {
@@ -41,8 +39,6 @@ async function getAllQrCodes() {
           console.log('result -->', onum, tnum, result);
         }
       });
-
-      // console.log('All-->', onum, tnum, outletTables);
     }));
     return Promise.resolve(global.messages.success('OUTLET_TABLES_CREATED', '', {}));
   }
