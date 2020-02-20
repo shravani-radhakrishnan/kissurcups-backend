@@ -5,8 +5,8 @@ const userNotification = {
       description: 'this is description text',
     },
   },
-  result: "Some data in dict or list format to be saved",
-  status: 'successfull',
+  result: 'success',
+  status: 1,
 }
 
 const setAlarm = {
@@ -16,8 +16,8 @@ const setAlarm = {
       text: 'this is text',
     },
   },
-  result: "Some data in dict or list format to be saved",
-  status: 'successful',
+  result: 'success',
+  status: 1,
 }
 
 const popUpNotification = {
@@ -27,8 +27,8 @@ const popUpNotification = {
       description: 'this is description text',
     },
   },
-  result: "Some data in dict or list format to be saved",
-  status: 'successful',
+  result: 'success',
+  status: 1,
 }
 
 module.exports = { userNotification, setAlarm, popUpNotification }; 
