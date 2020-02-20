@@ -36,6 +36,10 @@ function getMessage() {
       data: { message: 'Mail send successfully', type: 'success', data: {} },
       status: 200,
     },
+    NOTIFICATION: {
+      data: { message: 'Some data in dict or list format to be saved', data: {} },
+      status: 200,
+    },
   };
 
   const errorMessages = {

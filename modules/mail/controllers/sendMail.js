@@ -1,4 +1,4 @@
-// const express = require('express');
+const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const template = require('./mailTemplete');
 
@@ -21,18 +21,18 @@ async function sendMail(payload) {
   });
 
   console.log('transporter-->', transporter);
-
   console.log('-->mailOptions', mailOptions);
-
-  transporter.sendMail(mailOptions, (error, response) => {
-    if (error) {
-      console.log("---->error", error);
-      throw new Error('MAIL_ERROR');
-    } else {
-      console.log("--->", response);
-      return Promise.resolve(global.messages.success('MAIL_SEND', '', response));
-    }
-  });
+  cron.schedule('20 14 * * *', () => {
+    transporter.sendMail(mailOptions, (error, response) => {
+      if (error) {
+        console.log('---->error', error);
+        throw new Error('MAIL_ERROR');
+      } else {
+        console.log('--->', response);
+        return Promise.resolve(global.messages.success('MAIL_SEND', '', response));
+      }
+    });
+  })
 
 }
 

@@ -446,7 +446,7 @@ module.exports = function (data) {
 								<tr>
 									<td class="bg_white email-section">
 										<div class="heading-section" style="text-align: center; padding: 0 30px;">
-											<h2>Dear shravani </h2>
+											<h2>Dear shravani Radhakrishnan </h2>
 											<p>Your booking has been successfully placed with Order No #. Will get in touch with you over the
 												phone and reach your location on the scheduled date.</p>
 										</div>
