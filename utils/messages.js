@@ -40,6 +40,10 @@ function getMessage() {
       data: { message: 'Some data in dict or list format to be saved', data: {} },
       status: 200,
     },
+    SUCCESS: {
+      data: { message: 'success', data: {} },
+      status: 200,
+    },
   };
 
   const errorMessages = {
@@ -97,6 +101,14 @@ function getMessage() {
     },
     MAIL_ERROR: {
       data: { message: 'Mail doesn\'t sent because of some technical issue' },
+      status: 400,
+    },
+    EXTRACT_FAILED: {
+      data: { message: 'Menu creation failed, please try again. ', type: 'error' },
+      status: 400,
+    },
+    POINT_ERROR: {
+      data: { message: '', type: 'error' },
       status: 400,
     },
   };
